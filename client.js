@@ -94,9 +94,22 @@ const connect = async () => {
    client.ev.on('group-participants.update', async (room) => {
       let meta = await (await client.groupMetadata(room.id))
       let member = room.participants[0]
-      let text_welcome = `Thanks +tag for joining into +grup group.`
-      let text_left = `+tag left from this group for no apparent reason.`
+      let text_welcome = `Welcome Kak +tag👋 Jangan Lupa Semangat yah`
+      let text_left = `+tag Keluar Karena Udah Kena Mental`
       let groupSet = global.db.groups.find(v => v.jid == room.id)
+      let buttons = [{
+          buttonId: `Y`,
+          buttonText: {
+                displayText: 'P\n\nGw Suka Coli'
+               },
+               type: 1
+             }, {
+                buttonId: `.owner`,
+                buttonText: {
+                   displayText: 'MASTAH'
+                },
+                type: 1
+            }]
       try {
          pic = await Func.fetchBuffer(await client.profilePictureUrl(member, 'image'))
       } catch {
@@ -111,10 +124,13 @@ const connect = async () => {
             }
          }
          let txt = (groupSet.text_welcome != '' ? groupSet.text_welcome : text_welcome).replace('+tag', `@${member.split`@`[0]}`).replace('+grup', `${meta.subject}`)
-         if (groupSet.welcome) client.sendMessageModify(room.id, txt, null, {
-            largeThumb: true,
-            thumbnail: pic,
-            url: global.db.setting.link
+         if (groupSet.welcome) client.sendButton(gc.id, txt, pic, `${txt}\n\n${readmore}${deskripsi}\n`, `${meta.subject}`, null, buttons, {
+                    document: true
+            }, {
+                title: 'Welcome Semoga Betahh',
+                largeThumb: true,
+                thumbnail: pic,
+                FileName: 'Harap Jangan Spam Yahh'
          })
       } else if (room.action == 'remove') {
          let txt = (groupSet.text_left != '' ? groupSet.text_left : text_left).replace('+tag', `@${member.split`@`[0]}`).replace('+grup', `${meta.subject}`)
