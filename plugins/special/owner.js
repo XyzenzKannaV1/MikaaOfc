@@ -7,7 +7,7 @@ exports.run = {
       client.sendContact(m.chat, [{
          name: global.owner_name,
          number: global.owner,
-         about: 'Owner & Creator'
+         about: 'Owner Siesta Kiww'
       }], m)
    },
    error: false,
